@@ -4,16 +4,7 @@ const prog = require('caporal');
 const chalk = require('chalk');
 const fs = require('fs');
 const child_process = require('child_process');
-
-function debounce(fn, wait) {
-  let timeout;
-  return (...params) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fn(params);
-    }, wait);
-  };
-}
+const debounce = require('./debounce');
 
 prog
   .version('1.0.0')
@@ -32,7 +23,7 @@ prog
       }
       console.log(chalk.redBright('>>> Starting Process..'));
       proc = child_process.spawn('node', [path], { stdio: 'inherit' });
-    }, 100);
+    }, 150);
 
     chokidar
       .watch('.')
