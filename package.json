@@ -12,5 +12,8 @@
   "bin": {
     "watcher": "index.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "caporal": "^1.4.0",
+    "chokidar": "^3.5.2"
+  }
 }
