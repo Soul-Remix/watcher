@@ -1,0 +1,16 @@
+{
+  "name": "js-watcher",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "A simple file watcher that will execute and restart your js file on any changes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soul-Remix",
+  "license": "MIT",
+  "bin": {
+    "watcher": "index.js"
+  },
+  "dependencies": {}
+}
