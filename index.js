@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const chokidar = require('chokidar');
 const prog = require('caporal');
+const fs = require('fs');
+const child_process = require('child_process');
 
 function debounce(fn, wait) {
   let timeout;
@@ -12,14 +14,29 @@ function debounce(fn, wait) {
   };
 }
 
-const start = debounce(() => {
-  console.log('starting');
-}, 100);
+prog
+  .version('1.0.0')
+  .argument('[filename]', 'Name of file to execute on change')
+  .action(async (args) => {
+    const path = args.filename || 'index.js';
+    try {
+      fs.promises.access(path);
+    } catch (err) {
+      throw new Error(`Couldn't find the file ${path}`);
+    }
+    let proc;
+    const start = debounce(() => {
+      if (proc) {
+        proc.kill();
+      }
+      proc = child_process.spawn('node', [path], { stdio: 'inherit' });
+    }, 100);
 
-const path = process.argv[2] || '.';
+    chokidar
+      .watch('.')
+      .on('add', start)
+      .on('change', start)
+      .on('unlink', start);
+  });
 
-chokidar
-  .watch(path)
-  .on('add', start)
-  .on('change', () => console.log('file changed'))
-  .on('unlink', () => console.log('file unlinked'));
+prog.parse(process.argv);
